@@ -1,0 +1,43 @@
+install.packages("caret")
+library(caret)
+heart_data <- data.frame(
+  V1 = runif(100, 30, 80),
+   V2 = runif(100, 120, 180),
+   V3 = runif(100, 70, 100),
+   V4 = runif(100, 0, 1),
+   V5 = runif(100, 0, 1),
+   V6 = runif(100, 0, 1),
+   V7 = runif(100, 0, 1),
+   V8 = runif(100, 0, 1),
+   V9 = runif(100, 0, 1),
+   V10 = runif(100, 0, 1),
+   V11 = runif(100, 0, 1),
+   V12 = runif(100, 0, 1),
+   V13 = runif(100, 0, 1),
+   V14 = sample(c(0,1), 100, replace = TRUE)
+ )
+ 
+ write.csv(heart_data, "Path/heart.csv", row.names = FALSE)
+heart <- read.csv("C:/Users/kusha/Downloads/heart.csv")
+str(heart)
+intrain <- createDataPartition(y = heart$V14, p = 0.7, list = FALSE)
+training <- heart[intrain, ]
+testing <- heart[-intrain, ]
+dim(training)
+dim(testing)
+anyNA(heart)
+summary(heart)
+ training[["V14"]] <- factor(training[["V14"]])
+ trctrl <- trainControl(method = "repeatedcv", number = 10, repeats = 3)
+ svm_Linear <- train(
+   V14 ~ ., 
+   data = training, 
+   method = "svmLinear", 
+   trControl = trctrl, 
+   preProcess = c("center", "scale"), 
+   tuneLength = 10
+ )
+svm_Linear
+test_pred <- predict(svm_Linear, newdata = testing)
+confusionMatrix(test_pred, as.factor(testing$V14))
+test_pred

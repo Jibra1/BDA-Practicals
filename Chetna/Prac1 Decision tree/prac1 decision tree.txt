@@ -1,0 +1,10 @@
+install.packges("party")
+ library(party)
+print(head(readingSkills))
+data(readingSkills)
+input.dat <- readingSkills[1:105,]
+ 
+png(file="File location for ouput with / and decision_tree.png")
+output.tree <- ctree(nativeSpeaker ~ age + shoeSize + score, data = input.dat)
+plot(output.tree)
+dev.off()

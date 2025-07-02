@@ -1,0 +1,16 @@
+# Load dataset
+ mydata <- read.csv("C:/Users/kusha/OneDrive/Desktop/Chetna/studentmarks.csv")
+ 
+ # View top rows and summary
+ head(mydata)
+summary(mydata)
+# Check standard deviation of each column
+ sapply(mydata, sd)
+# Convert rank to categorical factor (required for regression)
+ mydata$rank <- factor(mydata$rank)
+ 
+ # Apply multiple regression using glm (for logistic regression)
+ mylogit <- glm(admit ~ gre + gpa + rank, data = mydata, family = "binomial")
+ 
+ # Display regression output
+ summary(mylogit)
